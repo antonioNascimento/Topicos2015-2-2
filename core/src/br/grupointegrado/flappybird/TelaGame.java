@@ -47,13 +47,24 @@ public class TelaGame extends TelaBase {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(.25f, .25f, .25f, 1); // Limoa a Tela e pinta a cor de Fundo
+        Gdx.gl.glClearColor(.25f, .25f, .25f, 1); // Limpa a Tela e pinta a cor de Fundo
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Mantem o buffer das cores
+
+        capturarTeclas();
 
         atualizar(delta);
         renderizar(delta);
 
         debug.render(mundo, camera.combined.cpy().scl(Util.PIXEL_METRO));
+    }
+
+    private boolean pulando = false;
+
+    private void capturarTeclas() {
+        pulando = false;
+        if (Gdx.input.justTouched()) {
+            pulando = true;
+        }
     }
 
     /**
@@ -62,8 +73,18 @@ public class TelaGame extends TelaBase {
      * @param delta
      */
     private void atualizar(float delta) {
+        passaro.atualizar(delta);
         mundo.step(1f / 60f, 6, 2);
+        atualizarCamera();
         atualizarChao();
+        if (pulando) {
+            passaro.pular();
+        }
+    }
+
+    private void atualizarCamera() {
+        camera.position.x = (passaro.getCorpo().getPosition().x + 34 / Util.PIXEL_METRO) * Util.PIXEL_METRO;
+        camera.update();
     }
 
     /**
