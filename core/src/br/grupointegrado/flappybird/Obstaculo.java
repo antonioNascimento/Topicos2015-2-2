@@ -7,6 +7,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import static br.grupointegrado.flappybird.Util.PIXEL_METRO;
+
 /**
  * Created by Antonio on 26/10/2015.
  */
@@ -54,14 +56,14 @@ public class Obstaculo {
     }
 
     private void initPosicao() {
-        largura = 40 / Util.PIXEL_METRO;
-        altura = camera.viewportHeight / Util.PIXEL_METRO;
+        largura = 40 / PIXEL_METRO;
+        altura = camera.viewportHeight / PIXEL_METRO;
 
-        float xInical = largura;
+        float xInical = largura + (camera.viewportWidth / 2 / PIXEL_METRO);
         if (ultimoObstaculo != null) {
             xInical = ultimoObstaculo.getPosX();
         }
-        posX = xInical + 8; // 4 é a distancia entre os obstaculos
+        posX = xInical + 4; // 4 é a distancia entre os obstaculos
 
         // PARCELA = Tamanho da Tela dividido por 6 para encontrar a Posição Y do Obstáculo
         float parcela = (altura - Util.ALTURA_CHAO) / 6;
@@ -78,5 +80,33 @@ public class Obstaculo {
     public void remover() {
         mundo.destroyBody(corpoCima);
         mundo.destroyBody(corpoBaixo);
+    }
+
+    public float getLargura() {
+        return largura;
+    }
+
+    public void setLargura(float largura) {
+        this.largura = largura;
+    }
+
+    public float getAltura() {
+        return altura;
+    }
+
+    public void setAltura(float altura) {
+        this.altura = altura;
+    }
+
+    public void setPosX(float posX) {
+        this.posX = posX;
+    }
+
+    public boolean isPassou() {
+        return passou;
+    }
+
+    public void setPassou(boolean passou) {
+        this.passou = passou;
     }
 }
