@@ -48,20 +48,41 @@ public class Passaro {
      */
     public void pular() {
         corpo.setLinearVelocity(corpo.getLinearVelocity().x, 0);
-        corpo.applyForceToCenter(0, 100, false);
+        corpo.applyForceToCenter(0, 115, false);
     }
 
     /**
      * Atualiza o comportamento do Passaro
      *
      * @param delta
+     * @param movimentar
      */
-    public void atualizar(float delta) {
-        atualizarVelocidade();
+    public void atualizar(float delta, boolean movimentar) {
+        if (movimentar) {
+            atualizarVelocidade();
+            atualizarRotacao();
+        }
+    }
+
+    private void atualizarRotacao() {
+        float velocidadeY  = corpo.getLinearVelocity().y;
+        float rotacao = 0;
+
+        if (velocidadeY < 0) {
+            // Caindo
+            rotacao = -15;
+        } else if (velocidadeY > 0) {
+            // Subindo
+            rotacao = 10;
+        } else {
+            // Reto
+            rotacao = 0;
+        }
+        rotacao = (float) Math.toRadians(rotacao);
+        corpo.setTransform(corpo.getPosition(), rotacao);
     }
 
     private void atualizarVelocidade() {
-
         corpo.setLinearVelocity(2f, corpo.getLinearVelocity().y);
     }
 
