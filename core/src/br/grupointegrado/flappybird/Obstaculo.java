@@ -1,6 +1,8 @@
 package br.grupointegrado.flappybird;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -24,11 +26,15 @@ public class Obstaculo {
     private float largura, altura;
     private boolean passou;
     private Obstaculo ultimoObstaculo; // Ultimo Antes do Atual
+    private final Texture texturaCima;
+    private final Texture texturaBaixo;
 
-    public Obstaculo(World mundo, OrthographicCamera camera, Obstaculo ultimoObstaculo) {
+    public Obstaculo(World mundo, OrthographicCamera camera, Obstaculo ultimoObstaculo, Texture texturaCima, Texture texturaBaixo) {
         this.mundo = mundo;
         this.camera = camera;
         this.ultimoObstaculo = ultimoObstaculo;
+        this.texturaCima = texturaCima;
+        this.texturaBaixo = texturaBaixo;
 
         initPosicao();
         initCorpoCima();
@@ -108,5 +114,15 @@ public class Obstaculo {
 
     public void setPassou(boolean passou) {
         this.passou = passou;
+    }
+
+    public void renderizar(SpriteBatch spriteBatch) {
+        float x = (corpoCima.getPosition().x - largura / 2) * PIXEL_METRO;
+        float y = (corpoCima.getPosition().y - altura / 2) * PIXEL_METRO;
+        spriteBatch.draw(texturaCima, x, y, largura * PIXEL_METRO, altura * PIXEL_METRO);
+
+        x = (corpoBaixo.getPosition().x - largura / 2) * PIXEL_METRO;
+        y = (corpoBaixo.getPosition().y - altura / 2) * PIXEL_METRO;
+        spriteBatch.draw(texturaBaixo, x, y, largura * PIXEL_METRO, altura * PIXEL_METRO);
     }
 }
